@@ -1,0 +1,7 @@
+{
+  "name": "advent-of-code-2021",
+  "packageManager": "yarn@3.1.0",
+  "devDependencies": {
+    "jest": "^27.4.2"
+  }
+}
