@@ -6,6 +6,7 @@ import {
   length,
   map,
   o,
+  reduce,
   split,
   trim,
 } from 'ramda';
@@ -42,20 +43,8 @@ const addToGridDiagonal = curry((data, [a, b]) => {
   ) {
     addCoords(data, y, x);
   }
+  return data;
 });
-const getPoints = data => {
-  const result = [];
-  for (const y in data) {
-    if (data.hasOwnProperty(y)) {
-      for (const x in data[y]) {
-        if (data[y].hasOwnProperty(x)) {
-          result.push([Number(x), Number(y), data[y][x]]);
-        }
-      }
-    }
-  }
-  return result;
-};
 
 const addToGrid = curry((data, [start, end]) => {
   const [x1, y1] = start;
@@ -70,21 +59,32 @@ const addToGrid = curry((data, [start, end]) => {
       addCoords(data, y1, i);
     }
   }
+  return data;
 });
 
-const getHydrotermalVenture = fn => data => {
-  const grid = {};
+const getPoints = data => {
+  const result = [];
+  for (const y in data) {
+    if (data.hasOwnProperty(y)) {
+      for (const x in data[y]) {
+        if (data[y].hasOwnProperty(x)) {
+          result.push([Number(x), Number(y), data[y][x]]);
+        }
+      }
+    }
+  }
+  return result;
+};
 
-  compose(forEach(fn(grid)), parseInput)(data);
-
-  return compose(
+const getHydrotermalVenture = reducer => data =>
+  compose(
     length,
     filter(([, , n]) => n > 1),
     getPoints,
-  )(grid);
-};
+    reduce(reducer, {}),
+    parseInput,
+  )(data);
 
 export const hydrotermalVenture = getHydrotermalVenture(addToGrid);
-
 export const hydrotermalVentureDiagonal =
   getHydrotermalVenture(addToGridDiagonal);
