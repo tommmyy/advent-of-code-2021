@@ -2,7 +2,6 @@ import {
   compose,
   curry,
   filter,
-  forEach,
   length,
   map,
   o,
@@ -15,7 +14,7 @@ const isUndefined = x => typeof x === 'undefined';
 
 const inc = v => (!v ? 1 : v + 1);
 
-const addCoords = (data, y, x, getV = inc) => {
+const addPoint = (data, y, x, getV = inc) => {
   if (isUndefined(data[y])) {
     data[y] = {};
   }
@@ -41,7 +40,7 @@ const addToGridDiagonal = curry((data, [a, b]) => {
     x <= end[0] && (stepY === -1 ? y >= end[1] : y <= end[1]);
     x += stepX, y += stepY
   ) {
-    addCoords(data, y, x);
+    addPoint(data, y, x);
   }
   return data;
 });
@@ -52,11 +51,11 @@ const addToGrid = curry((data, [start, end]) => {
 
   if (x1 === x2) {
     for (let i = Math.min(y1, y2); i <= Math.max(y1, y2); i++) {
-      addCoords(data, i, x1);
+      addPoint(data, i, x1);
     }
   } else if (y1 === y2) {
     for (let i = Math.min(x1, x2); i <= Math.max(x1, x2); i++) {
-      addCoords(data, y1, i);
+      addPoint(data, y1, i);
     }
   }
   return data;
