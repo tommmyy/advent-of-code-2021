@@ -44,6 +44,7 @@ export const countFish = remainingTime => {
     );
 
     if (k > 0) {
+      // NOTE: for chaching to work, use ascending order
       let i = 1;
       while (k >= i) {
         total += _countFish(
