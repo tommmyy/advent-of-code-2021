@@ -13,19 +13,19 @@ const realData = fs.readFileSync(path.join(__dirname, './input.txt'), {
 const exerciseData = stringToNumbers('3,4,3,1,2');
 
 describe('day6', () => {
-  // describe('lanternFish', () => {
-  //   const testUtil = (input, days, expected) =>
-  //     it(`should return ${expected}`, () => {
-  //       expect(lanternFish(input, days)).toBe(expected);
-  //     });
+  describe('lanternFish', () => {
+    const testUtil = (input, days, expected) =>
+      it(`should return ${expected}`, () => {
+        expect(lanternFish(input, days)).toBe(expected);
+      });
 
-  //   testUtil(exerciseData, 18, 26);
+    testUtil(exerciseData, 18, 26);
 
-  //   testUtil(exerciseData, 80, 5934);
+    testUtil(exerciseData, 80, 5934);
 
-  //   testUtil(stringToNumbers(realData), 80, 358214);
-  //   // testUtil(stringToNumbers(realData), 256, 358214);
-  // });
+    testUtil(stringToNumbers(realData), 80, 358214);
+    // testUtil(stringToNumbers(realData), 256, 358214);
+  });
 
   it('countFish', () => {
     expect(countFish(9)).toBe(2);
@@ -45,7 +45,9 @@ describe('day6', () => {
     const testUtil = (input, days, expected_, only) => {
       const fn = only ? it.only : it;
 
-      const expected = lanternFish(input, days);
+      const expected =
+        expected_ < 400000 ? lanternFish(input, days) : expected_;
+
       fn(`should return ${expected} for ${days} days`, () => {
         expect(lanternFishOpt(input, days)).toBe(expected);
       });
@@ -63,7 +65,8 @@ describe('day6', () => {
     testUtil(exerciseData, 18, 26);
 
     testUtil(exerciseData, 80, 5934);
-    // testUtil(exerciseData, 256, 26984457539);
-    // testUtil(stringToNumbers(realData), 256, 1622533344325);
+    testUtil(exerciseData, 256, 26984457539);
+
+    testUtil(stringToNumbers(realData), 256, 1622533344325);
   });
 });

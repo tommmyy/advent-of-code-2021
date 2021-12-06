@@ -25,24 +25,6 @@ export const lanternFish = (initialState, days) => {
 const INCUBATOR_TIME = 7;
 const INCUBATOR_TIME_FIRST_TIME = INCUBATOR_TIME + 2;
 
-export const lanternFishOpt = (initialStateIn, days) => {
-  const initialState = [...initialStateIn];
-  let total = initialState.length;
-
-  forEach(state => {
-    let t = state + 1;
-
-    if (t < days) {
-      while (t <= days) {
-        total += countFish(days - t);
-        t += INCUBATOR_TIME;
-      }
-    }
-  }, initialState);
-
-  return total;
-};
-
 export const countFish = remainingTime => {
   const cacheFish = {};
   const _countFish = remainingTime => {
@@ -77,4 +59,20 @@ export const countFish = remainingTime => {
   };
 
   return _countFish(remainingTime);
+};
+
+export const lanternFishOpt = (initialStateIn, days) => {
+  const initialState = [...initialStateIn];
+  let total = initialState.length;
+
+  forEach(state => {
+    let t = state + 1;
+
+    while (t <= days) {
+      total += countFish(days - t);
+      t += INCUBATOR_TIME;
+    }
+  }, initialState);
+
+  return total;
 };
