@@ -1,4 +1,4 @@
-import { compose, map, reject, split, trim } from 'ramda';
+import { compose, head, map, reject, split, trim } from 'ramda';
 
 export const stringToList = txt =>
   compose(
@@ -9,3 +9,6 @@ export const stringToList = txt =>
 
 export const stringToListOfNumbers = txt =>
   compose(map(Number), stringToList)(txt);
+
+export const stringToNumbers = txt =>
+  compose(head, map(compose(map(Number), split(','))), stringToList)(txt);
