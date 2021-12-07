@@ -35,8 +35,8 @@ export const countFish = remainingTime => {
     if (cacheFish.hasOwnProperty(remainingTime)) {
       return cacheFish[remainingTime];
     }
-    let total = 0;
 
+    let total = 0;
     total += 1 + _countFish(remainingTime - INCUBATOR_TIME_FIRST_TIME);
 
     const k = Math.floor(
