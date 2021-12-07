@@ -46,7 +46,7 @@ export const treacheryOfWhales2 = data => {
   return minFuel;
 };
 
-// Triangle number
+// NOTE: Triangle number
 const computeCost = (from, to) => {
   const x = Math.abs(from - to);
   return (x * (x + 1)) / 2;
@@ -57,6 +57,8 @@ export const treacheryOfWhales2Opt = data => {
   const max = Math.max(...data);
 
   let minFuel = Infinity;
+
+  // We do not need compute MAX, but I don't like infinite while-loops.
   for (let level = min; level <= max; level++) {
     let fuel = 0;
     for (let i = 0; i < data.length; i++) {
@@ -66,6 +68,7 @@ export const treacheryOfWhales2Opt = data => {
     if (fuel < minFuel) {
       minFuel = fuel;
     } else {
+      // NOTE: once the sequence stops declining we found optimum
       break;
     }
   }
