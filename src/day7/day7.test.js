@@ -4,7 +4,11 @@ import fs from 'fs-extra';
 
 import { stringToNumbers } from '../utils';
 
-import { treacheryOfWhales, treacheryOfWhalesCostly } from './day7';
+import {
+  treacheryOfWhales,
+  treacheryOfWhales2,
+  treacheryOfWhales2Opt,
+} from './day7';
 
 const realData = fs.readFileSync(path.join(__dirname, './input.txt'), {
   encoding: 'utf-8',
@@ -24,11 +28,24 @@ describe('day7', () => {
     testUtil(stringToNumbers(realData), 340052);
   });
 
-  describe('treacheryOfWhalesCostly', () => {
+  describe('treacheryOfWhales2', () => {
     const testUtil = (input, expected, only) => {
       const fn = only ? it.only : it;
       fn(`should return ${expected}`, () => {
-        expect(treacheryOfWhalesCostly(input)).toBe(expected);
+        expect(treacheryOfWhales2(input)).toBe(expected);
+      });
+    };
+
+    testUtil(exerciseData, 168);
+
+    testUtil(stringToNumbers(realData), 92948968);
+  });
+
+  describe('treacheryOfWhales2Opt', () => {
+    const testUtil = (input, expected, only) => {
+      const fn = only ? it.only : it;
+      fn(`should return ${expected}`, () => {
+        expect(treacheryOfWhales2Opt(input)).toBe(expected);
       });
     };
 

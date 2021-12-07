@@ -15,35 +15,58 @@ export const treacheryOfWhales = data => {
   return minFuel;
 };
 
+// Prebuffer
 const getComputeCost = bufferTo => {
   const sumSequence = {};
   let fuel = 0;
-
   for (let j = 0; j <= bufferTo; j++) {
-    fuel += j;
-    sumSequence[j] = fuel;
+    sumSequence[j] = fuel += j;
   }
 
-  return (from, to) => {
-    const steps = Math.abs(from - to);
-    return sumSequence[steps];
-  };
+  return (from, to) => sumSequence[Math.abs(from - to)];
 };
 
-export const treacheryOfWhalesCostly = data => {
+export const treacheryOfWhales2 = data => {
   const min = Math.min(...data);
   const max = Math.max(...data);
 
   const computeCost = getComputeCost(max - min);
 
   let minFuel = Infinity;
-  for (let i = min; i <= max; i++) {
+  for (let level = min; level <= max; level++) {
     let fuel = 0;
-    for (let j = 0; j < data.length; j++) {
-      fuel += computeCost(data[j], i);
+    for (let i = 0; i < data.length; i++) {
+      fuel += computeCost(data[i], level);
     }
+
     if (fuel < minFuel) {
       minFuel = fuel;
+    }
+  }
+  return minFuel;
+};
+
+// Triangle number
+const computeCost = (from, to) => {
+  const x = Math.abs(from - to);
+  return (x * (x + 1)) / 2;
+};
+
+export const treacheryOfWhales2Opt = data => {
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+
+  let minFuel = Infinity;
+  for (let level = min; level <= max; level++) {
+    let fuel = 0;
+    for (let i = 0; i < data.length; i++) {
+      fuel += computeCost(data[i], level);
+    }
+
+    if (fuel < minFuel) {
+      minFuel = fuel;
+    } else {
+      break;
     }
   }
   return minFuel;
