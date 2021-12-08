@@ -4,14 +4,16 @@ import {
   filter,
   find,
   findIndex,
+  forEach,
   includes,
   length,
   map,
   reduce,
   sum,
 } from 'ramda';
-import { equalsLength } from 'ramda-extension';
-import listToString from 'ramda-extension/lib/listToString';
+import { equalsLength, listToString } from 'ramda-extension';
+
+const arrayEquals = y => x => listToString(x) === listToString(y);
 
 export const sevenSegmentSearch1 = data => {
   const r = compose(
@@ -28,20 +30,19 @@ export const sevenSegmentSearch1 = data => {
   return r;
 };
 
-const getObviousNums = data => {
-  const foundNums = Array(10).fill(null);
+const getObviousNums = data =>
+  [
+    [1, 2],
+    [4, 4],
+    [7, 3],
+    [8, 7],
+  ].reduce(
+    (acc, [index, len]) => ((acc[index] = find(equalsLength(len), data)), acc),
+    Array(10).fill(null),
+  );
 
-  foundNums[1] = find(equalsLength(2))(data);
-  foundNums[4] = find(equalsLength(4))(data);
-  foundNums[7] = find(equalsLength(3))(data);
-  foundNums[8] = find(equalsLength(7))(data);
-
-  return foundNums;
-};
 const getA = (knownNums, segments) => {
   segments.a = difference(knownNums[7], knownNums[1])[0];
-
-  return segments;
 };
 
 const get3 = (knownNums, segments, combinations) => {
@@ -102,30 +103,19 @@ const get0and9 = (knownNums, segments, combinations) => {
 export const solveRow = combinations => {
   const foundNums = getObviousNums(combinations);
   const segments = {};
-
-  getA(foundNums, segments);
-  get3(foundNums, segments, combinations);
-  getG(foundNums, segments);
-  getB(foundNums, segments);
-  get2and5(foundNums, segments, combinations);
-  get6(foundNums, segments, combinations);
-  get0and9(foundNums, segments, combinations);
+  forEach(
+    fn => fn(foundNums, segments, combinations),
+    [getA, get3, getG, getB, get2and5, get6, get0and9],
+  );
 
   return [foundNums, segments];
 };
 
 const decode = (nums, code) =>
-  Number(
-    reduce(
-      (acc, num) =>
-        `${acc}${findIndex(
-          x => listToString(x) === listToString(num),
-          nums,
-        )}`,
-      '',
-      code,
-    ),
-  );
+  compose(
+    Number,
+    reduce((acc, num) => `${acc}${findIndex(arrayEquals(num), nums)}`, ''),
+  )(code);
 
 export const sevenSegmentSearch2 = compose(
   sum,
