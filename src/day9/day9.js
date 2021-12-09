@@ -34,9 +34,10 @@ const getN = ([x, y], data) => [
   getPoint(x, y + 1, data),
   getPoint(x - 1, y, data),
 ];
+
 const getValue = unless(isNil, ([, , value]) => value);
-const getPointByNeigborhood = curry((fn, point, data) => fn(getN(point, data)));
-const getLowestNeigbour = getPointByNeigborhood(
+const getPointByN = curry((fn, point, data) => fn(getN(point, data)));
+const getLowestNeigbour = getPointByN(
   compose(
     reduce(min, Infinity),
     filter(x => x != null),
