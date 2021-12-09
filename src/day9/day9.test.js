@@ -43,8 +43,8 @@ describe('day9', () => {
       });
     };
 
-    testUtil(exerciseData, 15);
+    testUtil(exerciseData, 1134);
 
-    testUtil(realData, 539);
+    testUtil(realData, 736920);
   });
 });
