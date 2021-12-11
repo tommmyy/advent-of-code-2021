@@ -24,7 +24,7 @@ const realData = parseData(
   }),
 );
 
-describe('day9', () => {
+describe('day10', () => {
   describe('syntaxScoring', () => {
     const testUtil = (input, expected, only) => {
       const fn = only ? it.only : it;

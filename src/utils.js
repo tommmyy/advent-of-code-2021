@@ -10,5 +10,8 @@ export const stringToList = txt =>
 export const stringToListOfNumbers = txt =>
   compose(map(Number), stringToList)(txt);
 
+export const stringToListOfDigits = txt =>
+  compose(map(map(Number)), map(split('')), stringToList)(txt);
+
 export const stringToNumbers = txt =>
   compose(head, map(compose(map(Number), split(','))), stringToList)(txt);
