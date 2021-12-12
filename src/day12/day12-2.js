@@ -35,10 +35,17 @@ export const findAllPaths = edges => {
       }
     }
   };
+  const safePush = (vertex, u, p) => {
+    const returnCode = canReturn(p, u, vertex);
+    if (returnCode) {
+      todo.push({
+        p: [...p, vertex],
+        u: u && returnCode !== SECOND_OCCURANCE,
+      });
+    }
+  };
 
-  let i = 0;
   while (todo.length) {
-    i++;
     const { p: currentPath, u } = todo.shift();
 
     const currentVertex = last(currentPath);
@@ -52,18 +59,9 @@ export const findAllPaths = edges => {
     const A = adjMap[currentVertex];
 
     for (let i = 0; i < A.length; i++) {
-      const vertex = A[i];
-      const returnCode = canReturn(currentPath, u, vertex);
-
-      if (returnCode) {
-        todo.push({
-          p: [...currentPath, vertex],
-          u: u && returnCode !== SECOND_OCCURANCE,
-        });
-      }
+      safePush(A[i], u, currentPath);
     }
   }
-  console.log(`paths: ${i}`);
   return paths;
 };
 
