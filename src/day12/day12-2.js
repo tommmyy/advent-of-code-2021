@@ -1,46 +1,44 @@
-import {
-  compose,
-  concat,
-  filter,
-  forEach,
-  last,
-  length,
-  map,
-  reduce,
-  reject,
-  takeLast,
-  toUpper,
-  uniq,
-} from 'ramda';
+import { compose, last, length, reduce, toUpper } from 'ramda';
 
 const isUpperCase = s => toUpper(s) === s;
-const getAdjancent = edges => x =>
-  compose(
-    reject(x => x == null),
-    map(([a, b]) => (a === x ? b : b === x ? a : null)),
-  )(edges);
+const SECOND_OCCURANCE = 'SECOND_OCCURANCE';
 
 export const findAllPaths = edges => {
   const todo = [{ p: ['start'], u: true }];
   const paths = [];
+  const adjMap = reduce(
+    (acc, [a, b]) => ({
+      ...acc,
+      [a]: [...(acc[a] || []), b],
+      [b]: [...(acc[b] || []), a],
+    }),
+    {},
+    edges,
+  );
 
   const canReturn = (prevPath, isUniq, x) => {
+    if (x === 'start') {
+      return false;
+    }
+
     if (isUpperCase(x)) {
       return true;
     }
 
     if (prevPath.indexOf(x) === -1) {
       return true;
+    } else {
+      if (isUniq) {
+        return SECOND_OCCURANCE;
+      } else {
+        return false;
+      }
     }
-
-    if (isUniq) {
-      return true;
-    }
-
-    return false;
   };
 
+  let i = 0;
   while (todo.length) {
+    i++;
     const { p: currentPath, u } = todo.shift();
 
     const currentVertex = last(currentPath);
@@ -51,27 +49,21 @@ export const findAllPaths = edges => {
       continue;
     }
 
-    let adjancent = getAdjancent(edges)(currentVertex);
-    let newU = u;
+    const A = adjMap[currentVertex];
 
-    if (newU) {
-      const small = reject(x => isUpperCase(x) && x !== 'start')(currentPath);
+    for (let i = 0; i < A.length; i++) {
+      const vertex = A[i];
+      const returnCode = canReturn(currentPath, u, vertex);
 
-      newU = u && small.length === uniq(small).length;
-    }
-
-    adjancent = reject(
-      x => x === 'start' || !canReturn(currentPath, newU, x),
-    )(adjancent);
-
-    if (adjancent.length) {
-      forEach(
-        vertex => todo.push({ p: [...currentPath, vertex], u: newU }),
-        adjancent,
-      );
+      if (returnCode) {
+        todo.push({
+          p: [...currentPath, vertex],
+          u: u && returnCode !== SECOND_OCCURANCE,
+        });
+      }
     }
   }
-
+  console.log(`paths: ${i}`);
   return paths;
 };
 

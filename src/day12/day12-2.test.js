@@ -107,6 +107,7 @@ pj-fs
 start-RW`),
       3509,
     );
-    // testUtil(parseData(realData), 153592);
+
+    testUtil(parseData(realData), 153592);
   });
 });
