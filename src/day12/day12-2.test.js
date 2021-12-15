@@ -2,6 +2,7 @@ import path from 'path';
 
 import fs from 'fs-extra';
 import { compose, join, map, split } from 'ramda';
+import { listToString } from 'ramda-extension';
 
 import { stringToList } from '../utils';
 
